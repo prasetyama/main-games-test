@@ -5,11 +5,10 @@
 
         <div class="container mt-4">
             <h2>Receipt</h2>
-            <div>
-                Receipt Number: #{{ $receipt->id }}
+            <div class="mb-3">
+                Receipt Number: #{{ $receipt->id }}<br>
+                Total : @currency($total_receipt)
             </div>
-
-            @foreach ($receipt->orders as $item)
 
             <table class="table table-bordered">
                 <tr>
@@ -19,16 +18,17 @@
                     <th>Quantity</th>
                     <th>Total</th>
                 </tr>
+                @foreach ($receipt->orders as $item)
 
-                <tr>
-                    <td>{{ $loop->index + 1 }}</td>
-                    <th>{{$item->menu->name}}</th>
-                    <th>@currency($item->price)</th>
-                    <th>{{$item->quantity}}</th>
-                    <th>@currency($item->total_price)</th>
-                </tr>
+                    <tr>
+                        <td>{{ $loop->index + 1 }}</td>
+                        <th>{{$item->menu->name}}</th>
+                        <th>@currency($item->price)</th>
+                        <th>{{$item->quantity}}</th>
+                        <th>@currency($item->total_price)</th>
+                    </tr>
+                @endforeach
             </table>
-            @endforeach
         </div>
 
     </div>

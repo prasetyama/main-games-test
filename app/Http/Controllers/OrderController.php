@@ -32,21 +32,25 @@ class OrderController extends Controller
             'user_id' => auth()->id(),
         ]);
 
+        $total_receipt = 0;
+
         foreach ($request->menu as $menu){
 
             if ($menu['quantity'] != 0){
                 $item = Menu::Where('id', '=', $menu['id'])->first();
-                Orders::create(array_merge([
+                $orders = Orders::create(array_merge([
                     'receipt_id' => $receipt->id,
                     'menu_id' => $menu['id'],
                     'quantity' => $menu['quantity'],
                     'price' => $item->price,
                     'total_price' => $item->price * $menu['quantity']
                 ]));
+
+                $total_receipt += $orders->total_price;
             }
         }
 
-        return view('order.receipt', compact('receipt'));
+        return view('order.receipt', compact('receipt', 'total_receipt'));
     }
 
     public function checkStock ($id, $quantity){
